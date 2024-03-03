@@ -1,0 +1,2 @@
+$OUpath = 'ou=Users,ou=SAL,ou=TPG,dc=ecs-net,dc=com,dc=pri'
+get-aduser -filter * -SearchBase $OUpath -properties * | select Name,DistinguishedName,SamAccountname,@{Name='ProxyAddresses'; Expression={$_.ProxyAddresses -join ","}},userprincipalname,mail, @{n="PrimarySMTPAddress";e={$_.proxyAddresses | Where {$_ -clike "SMTP:*"}}}| export-csv UserOn-PremUpn221.csv -nti
